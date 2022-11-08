@@ -1,0 +1,15 @@
+{
+  "name": "library_app",
+  "version": "1.0.0",
+  "description": "Приложение «библиотека»",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Butusov S.A.",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
