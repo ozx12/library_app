@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const fileMulter = require('../../middleware/file');
-const books = require("../../models/book.js");
-
+const books = require("../../DB/books.js");
+const Book = require("../../models/book.js");
 
 
 router.get('/', (req, res) => {
     const {book} = books;
-    res.json(book);
+    res.json(book);   
 });
 
-router.post('/api/user/login', (req, res) => {
-    const {book} = books;
-    res.status(201);
-    res.json({ id: 1, mail: "test@mail.ru" });
-});
+
 
 router.get('/:id', (req, res) => {
     const {book} = books;
@@ -34,17 +30,34 @@ router.get('/:id/download', (req, res) => {
     const {id} = req.params;
     const idx = book.findIndex(el => el.id === id);
 
-    if( idx !== -1) {
-        res.json(book[idx]);
+     if( idx !== -1) {
+        let getFile = (book[idx].fileBook);
+        if (getFile !== '' ){
+        console.log (getFile);
+        res.sendFile(getFile, { root: 'public\\img' });   
+        } else {
+            res.status(404);
+            res.json('404 | страница не найдена');
+        }
+
+
     } else {
         res.status(404);
         res.json('404 | страница не найдена');
     }
 });
 
-router.post('', (req, res) => {
+
+router.post('/', fileMulter.single('fileBook'), (req, res) => {
     const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName, fileBook} = req.body;
+    const {title, description, authors, favorite, fileCover, fileName} = req.body; 
+    var fileBook = "";
+    if(req.file){
+        fileBook = req.file.filename;
+    }
+    console.log(fileBook);
+
+
 
     const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
     book.push(newBook);
@@ -68,11 +81,18 @@ router.delete('/:id', (req, res) => {
 });
 
 
-router.put('/:id', (req, res) => {
+router.put('/:id', fileMulter.single('fileBook'), (req, res) => {
     const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName,  fileBook} = req.body;
+    const {title, description, authors, favorite, fileCover, fileName} = req.body;
     const {id} = req.params;
     const idx = book.findIndex(el => el.id === id);
+    
+    var fileBook = "";
+    if(req.file){
+        fileBook = req.file.filename;
+    }
+    console.log(fileBook);
+
 
     if (idx !== -1){
         book[idx] = {
