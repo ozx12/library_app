@@ -51,11 +51,24 @@ app.get('/api/books/:id', (req, res) => {
     }
 });
 
+app.get('/api/books/:id/download', (req, res) => {
+    const {book} = books;
+    const {id} = req.params;
+    const idx = book.findIndex(el => el.id === id);
+
+    if( idx !== -1) {
+        res.json(book[idx]);
+    } else {
+        res.status(404);
+        res.json('404 | страница не найдена');
+    }
+});
+
 app.post('/api/books', (req, res) => {
     const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName} = req.body;
+    const {title, description, authors, favorite, fileCover, fileName, fileBook} = req.body;
 
-    const newBook = new Book(title, description, authors, favorite, fileCover, fileName);
+    const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
     book.push(newBook);
 
     res.status(201);
@@ -79,7 +92,7 @@ app.delete('/api/books/:id', (req, res) => {
 
 app.put('/api/books/:id', (req, res) => {
     const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName} = req.body;
+    const {title, description, authors, favorite, fileCover, fileName,  fileBook} = req.body;
     const {id} = req.params;
     const idx = book.findIndex(el => el.id === id);
 
@@ -91,7 +104,8 @@ app.put('/api/books/:id', (req, res) => {
             authors, 
             favorite, 
             fileCover, 
-            fileName
+            fileName,
+            fileBook
         }
 
         res.json(book[idx]);
