@@ -4,7 +4,8 @@
   "description": "Приложение «библиотека»",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "author": "Butusov S.A.",
   "license": "ISC",
@@ -12,5 +13,8 @@
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
