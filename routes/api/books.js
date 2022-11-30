@@ -67,7 +67,7 @@ router.get('/:id/download', (req, res) => {
     }
 });
 
-
+ 
 router.post('/create', fileMulter.single('fileBook'), (req, res) => {
     const { book } = books;
     const { title, description, authors, favorite, fileCover, fileName } = req.body;
@@ -75,7 +75,7 @@ router.post('/create', fileMulter.single('fileBook'), (req, res) => {
     if (req.file) {
         fileBook = req.file.filename;
     } 
-    
+
     const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
     book.push(newBook);
 
