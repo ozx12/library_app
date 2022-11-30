@@ -1,0 +1,11 @@
+<%- include('./chunks/start', {title: title}) %>
+<%- include('./chunks/menu') %>
+<div class="container mt-5" >     
+<p>
+     <b>Username:</b>   <%= user.username %><br />   
+     <b>email:</b>   <%= user.email %><br />   
+</p>
+<a href="/user/logout">Выйти</a>
+</div>
+
+<%- include('./chunks/end') %>

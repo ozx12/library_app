@@ -1,0 +1,21 @@
+<%- include('./chunks/start', {title: title}) %>
+    <%- include('./chunks/menu') %>
+        <div class="container mt-5" >          
+                <h4>Вход</h4>
+                <form action="/user/signup" method="post">
+                    <div>
+                        <label>Логин:</label>
+                        <input type="text" name="username" /><br />
+                    </div>
+                    <div>
+                        <label>Пароль:</label>
+                        <input type="password" name="password" />
+                    </div>
+                    <div>
+                        <input type="submit" value="Войти" />
+                    </div>
+                </form>
+            </div>            
+        </div>
+
+        <%- include('./chunks/end') %>
