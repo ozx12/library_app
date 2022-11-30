@@ -1,0 +1,68 @@
+<form method="POST">
+    <div class="form-group">
+        <label for="inputTitle">Заголовок</label>
+        <input type="text"
+               value="<%= books.title %>"
+               name="title"
+               class="form-control"
+               id="inputTitle">
+    </div>
+
+    <div class="form-group">
+        <label for="inputDesc">Описание</label>
+        <textarea
+                rows="3"
+                name="description"
+                class="form-control"
+                id="inputDesc"
+        ><%= books.description %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="inputAuthors">Автор</label>
+        <textarea
+                rows="1"
+                name="authors"
+                class="form-control"
+                id="inputAuthors"
+        ><%= books.authors %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="inputFavorite">Favorite</label>
+        <textarea
+                rows="1"
+                name="favorite"
+                class="form-control"
+                id="inputFavorite"
+        ><%= books.favorite %></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label for="inputCover">Обложка</label>
+        <textarea
+                rows="1"
+                name="fileCover"
+                class="form-control"
+                id="inputCover"
+        ><%= books.fileCover %></textarea>
+    </div>
+
+
+    <div class="form-group">
+        <label for="inputFileName">Имя файла книги</label>
+        <textarea
+                rows="1"
+                name="fileName"
+                class="form-control"
+                id="inputFileName"
+        ><%= books.fileName %></textarea>
+    </div>   
+
+
+
+    <div class="form-group text-right ">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+</form>

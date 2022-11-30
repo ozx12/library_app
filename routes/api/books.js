@@ -6,35 +6,55 @@ const Book = require("../../models/book.js");
 
 
 router.get('/', (req, res) => {
-    const {book} = books;
-    res.json(book);   
+    res.render("index", {
+        title: "Список книг",
+        books
+    });
+});
+
+router.get('/update/:id', (req, res) => {
+    res.render("update", {
+        title: "Редактировать книгу",
+        books
+    });
+});
+
+router.get('/create', (req, res) => {
+    res.render("create", {
+        title: "Новая книга",
+        books
+    });
 });
 
 
 
 router.get('/:id', (req, res) => {
-    const {book} = books;
-    const {id} = req.params;
+    const { book } = books;
+    const { id } = req.params;
     const idx = book.findIndex(el => el.id === id);
 
-    if( idx !== -1) {
-        res.json(book[idx]);
-    } else {
+    if (idx !== -1) {
+        res.render("view", {
+            title: "Просмотр книги",
+            books: book[idx],
+        });
+    }
+    else {
         res.status(404);
         res.json('404 | страница не найдена');
     }
 });
 
 router.get('/:id/download', (req, res) => {
-    const {book} = books;
-    const {id} = req.params;
+    const { book } = books;
+    const { id } = req.params;
     const idx = book.findIndex(el => el.id === id);
 
-     if( idx !== -1) {
+    if (idx !== -1) {
         let getFile = (book[idx].fileBook);
-        if (getFile !== '' ){
-        console.log (getFile);
-        res.sendFile(getFile, { root: 'public\\img' });   
+        if (getFile !== '') {
+            console.log(getFile);
+            res.sendFile(getFile, { root: 'public\\img' });
         } else {
             res.status(404);
             res.json('404 | страница не найдена');
@@ -48,11 +68,11 @@ router.get('/:id/download', (req, res) => {
 });
 
 
-router.post('/', fileMulter.single('fileBook'), (req, res) => {
-    const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName} = req.body; 
+router.post('/create', fileMulter.single('fileBook'), (req, res) => {
+    const { book } = books;
+    const { title, description, authors, favorite, fileCover, fileName } = req.body;
     var fileBook = "";
-    if(req.file){
+    if (req.file) {
         fileBook = req.file.filename;
     }
     console.log(fileBook);
@@ -63,17 +83,17 @@ router.post('/', fileMulter.single('fileBook'), (req, res) => {
     book.push(newBook);
 
     res.status(201);
-    res.json(newBook);
+    res.redirect('/');
 });
 
-router.delete('/:id', (req, res) => {
-    const {book} = books;
-    const {id} = req.params;
+router.post('/delete/:id', (req, res) => {
+    const { book } = books;
+    const { id } = req.params;
     const idx = book.findIndex(el => el.id === id);
-     
-    if(idx !== -1){
+
+    if (idx !== -1) {
         book.splice(idx, 1);
-        res.json('ok');
+        res.redirect('/');
     } else {
         res.status(404);
         res.json('404 | страница не найдена');
@@ -81,32 +101,32 @@ router.delete('/:id', (req, res) => {
 });
 
 
-router.put('/:id', fileMulter.single('fileBook'), (req, res) => {
-    const {book} = books;
-    const {title, description, authors, favorite, fileCover, fileName} = req.body;
-    const {id} = req.params;
+router.post('/update/:id', fileMulter.single('fileBook'), (req, res) => {
+    const { book } = books;
+    const { title, description, authors, favorite, fileCover, fileName } = req.body;
+    const { id } = req.params;
     const idx = book.findIndex(el => el.id === id);
-    
+
     var fileBook = "";
-    if(req.file){
+    if (req.file) {
         fileBook = req.file.filename;
     }
-    console.log(fileBook);
+    
 
 
-    if (idx !== -1){
+    if (idx !== -1) {
         book[idx] = {
             ...book[idx],
-            title, 
-            description, 
-            authors, 
-            favorite, 
-            fileCover, 
+            title,
+            description,
+            authors,
+            favorite,
+            fileCover,
             fileName,
             fileBook
         }
 
-        res.json(book[idx]);
+        res.redirect('/');
     } else {
         res.status(404);
         res.json('404 | страница не найдена');

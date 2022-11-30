@@ -2,6 +2,7 @@ const express = require('express');
 const booksRouter = require('./routes/api/books');
 const userRouter = require('./routes/api/user');
 const books = require('./DB/books');
+const indexRouter = require('./routes/index');
 var fs = require('fs');
 
 fs.stat('public/img', function(err) {
@@ -16,16 +17,19 @@ fs.stat('public/img', function(err) {
     }
 });
 
+
+
 const app = express();
+app.use(express.urlencoded());
+app.set("view engine", "ejs");
+
 app.use(express.json());
-app.use('/api/books', booksRouter);
-app.use('/api/user', userRouter);
+app.use('/book', booksRouter);
+app.use('/user', userRouter);
+app.use('/', indexRouter);
 
 
 
-console.log (books);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT);
-
-console.log(`http://localhost:${PORT}`)
