@@ -74,11 +74,8 @@ router.post('/create', fileMulter.single('fileBook'), (req, res) => {
     var fileBook = "";
     if (req.file) {
         fileBook = req.file.filename;
-    }
-    console.log(fileBook);
-
-
-
+    } 
+    
     const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
     book.push(newBook);
 
