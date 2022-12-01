@@ -7,6 +7,13 @@ const indexRouter = require('./routes/index');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require("./models/user");
+const app = express();
+
+const http = require('http');
+const socketIO = require('socket.io');
+const server = http.Server(app);
+const io = socketIO(server);
+
 var fs = require('fs');
 
 fs.stat('public/img', function(err) {
@@ -21,7 +28,6 @@ fs.stat('public/img', function(err) {
     }
 });
 
-const app = express();
 app.use(express.urlencoded());
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -42,18 +48,39 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 //Конец Настройки локальной аутентификации с помощью PassportJS
 
+
+//Роуты
 app.use('/book', bookRouter);
 app.use('/user', userRouter);
 app.use('/', indexRouter);
 app.use('/api/books', booksRouter); //Роутер для задания 2.7
+//Конец Роуты
+
+//socket io
+io.on('connection', (socket) => {
+    const {id} = socket;
+    console.log(`Socket connected: ${id}`); 
+    
+    const {bookID} = socket.handshake.query;
+    console.log(`ID книги: ${bookID}`);
+    socket.join(bookID);
+    socket.on('message', (msg) => {       
+        socket.to(bookID).emit('message', msg);
+        socket.emit('message', msg);
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`Socket disconnected: ${id}`);
+    });
+});
+//Конец socket io
 
 async function start(PORT, UrlDB) {
     try {
         await mongoose.connect(UrlDB);
-        app.listen(PORT)
+        server.listen(PORT)
     } catch (e) {
         console.log(e);
     }
