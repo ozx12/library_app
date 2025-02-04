@@ -8,6 +8,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require("./models/user");
 const app = express();
+require('dotenv').config();
 
 const http = require('http');
 const socketIO = require('socket.io');
@@ -34,7 +35,7 @@ app.use(express.json());
 
 //Настройка локальной аутентификации с помощью PassportJS
 
-passport.use(new LocalStrategy(User.authenticate()));
+
 
 app.use(require("express-session")({
   secret: "Secrt",
@@ -87,8 +88,15 @@ async function start(PORT, UrlDB) {
 }
 
 
-const UrlDB = process.env.UrlDB;
-const PORT = process.env.PORT || 3000;
+URL_DB = process.env.URL_DB;
+TESTENV = process.env.TESTENV;
+
+console.log (URL_DB);
+console.log (TESTENV);
+console.log ('НОВАЯ ВЕРСиЯ');
+
+const UrlDB = (URL_DB);
+const PORT = process.env.PORT || 3001;
 start(PORT, UrlDB);
 console.log(`http://localhost:${PORT}`)
 

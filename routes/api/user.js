@@ -49,7 +49,7 @@ router.post('/register', (req, res, next) => {
         password, function (err, user) {
             if (!err) {
                 next();
-                return res.redirect("/user/signup");
+                return res.redirect("/user/me");
             } else {
                 console.log(err);
             }
